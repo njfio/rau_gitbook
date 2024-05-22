@@ -1,5 +1,7 @@
 # Rust Airtable Utility (RAU) Documentation
 
+<figure><img src=".gitbook/assets/DALL·E 2024-05-22 12.40.51 - Create a banner image for a GitBook titled &#x27;R.A.U._ Rust Airtable Utility&#x27;. The design should be modern and clean, featuring the Rust programming lang.webp" alt=""><figcaption></figcaption></figure>
+
 [![Rust](https://img.shields.io/badge/Rust-2021-orange)](https://www.rust-lang.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Welcome to the Rust Airtable Utility (RAU) documentation. RAU is a command-line utility written in Rust that allows you to interact with the Airtable API. This utility enables you to query, create, and update records in your Airtable bases seamlessly. Below is the detailed documentation for using RAU effectively.
@@ -21,17 +23,17 @@ Welcome to the Rust Airtable Utility (RAU) documentation. RAU is a command-line 
 2.  **Clone the Repository:**
 
     ```bash
-    bashgit clone https://github.com/njfio/rau.git
+    git clone https://github.com/njfio/rau.git
     ```
 3.  **Navigate to the Project Directory:**
 
     ```bash
-    bashcd rau
+    cd rau
     ```
 4.  **Build the Project:**
 
     ```bash
-    bashcargo build
+    cargo build
     ```
 
 ### Configuration
@@ -126,12 +128,3 @@ RAU is a powerful CLI tool that simplifies your interaction with Airtable. For a
 
 * The RAU project has various dependencies, such as reqwest, serde, clap, config, tokio, rustyline, lazy\_static, and more. These dependencies help in the utility's functionality and development.
 
-**Code Snippet:**
-
-* Below is a code snippet related to the completion specification for the RAU CLI tool:
-
-```javascript
-javascriptconst BASEPATH = "/Users/n/.rau/";const completionSpec: Fig.Spec = {    name: "rau",    description: "CLI for interacting with Airtable",    args: [        {            name: "config",            description: "The name of the configuration to use",            isOptional: false,            generators: {                script: [`awk`, `-F=`, `/^[a-zA-Z0-9_-]+/`, `${BASEPATH}config.toml`],                postProcess: (out) => {                    return out                        .split("\n")                        .filter((line) => line.trim() && !line.startsWith("api_key"))                        .map((line) => ({                            name: line.split("=")[0].trim(),                            description: "Configuration name",                        }));                },            },        },        {            name: "record_id",            description: "The ID of the record to update or query",            isOptional: true,            generators: {                script: (tokens) => {                    const config = tokens[1];                    if (config) {                        return [`${BASEPATH}rau_fetch_records.sh`, config];                    }                    return [""];                },                postProcess: (out) => {                    return out.split("\n").map((line) => {                        const [id, name] = line.split(",", 2);                        return {                            name: name.replace(/"/g, "").trim(),                            insertValue: id,                            description: id,                        };                    });                },            },        },    ],};
-```
-
-Feel free to explore RAU by referring to the provided documentation and resources.
