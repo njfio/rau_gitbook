@@ -115,3 +115,23 @@ bashrau <config_name> [record_id] [fields] [options]
 ***
 
 RAU is a powerful CLI tool that simplifies your interaction with Airtable. For advanced usage and further customization, refer to the source code and additional documentation provided in the repository.
+
+#### Additional Information
+
+**Releases:**
+
+* The latest release for the RAU project is version 0.1.0. You can find more details about this release on the [Releases page](https://github.com/njfio/rau/releases).
+
+**Dependencies:**
+
+* The RAU project has various dependencies, such as reqwest, serde, clap, config, tokio, rustyline, lazy\_static, and more. These dependencies help in the utility's functionality and development.
+
+**Code Snippet:**
+
+* Below is a code snippet related to the completion specification for the RAU CLI tool:
+
+```javascript
+javascriptconst BASEPATH = "/Users/n/.rau/";const completionSpec: Fig.Spec = {    name: "rau",    description: "CLI for interacting with Airtable",    args: [        {            name: "config",            description: "The name of the configuration to use",            isOptional: false,            generators: {                script: [`awk`, `-F=`, `/^[a-zA-Z0-9_-]+/`, `${BASEPATH}config.toml`],                postProcess: (out) => {                    return out                        .split("\n")                        .filter((line) => line.trim() && !line.startsWith("api_key"))                        .map((line) => ({                            name: line.split("=")[0].trim(),                            description: "Configuration name",                        }));                },            },        },        {            name: "record_id",            description: "The ID of the record to update or query",            isOptional: true,            generators: {                script: (tokens) => {                    const config = tokens[1];                    if (config) {                        return [`${BASEPATH}rau_fetch_records.sh`, config];                    }                    return [""];                },                postProcess: (out) => {                    return out.split("\n").map((line) => {                        const [id, name] = line.split(",", 2);                        return {                            name: name.replace(/"/g, "").trim(),                            insertValue: id,                            description: id,                        };                    });                },            },        },    ],};
+```
+
+Feel free to explore RAU by referring to the provided documentation and resources.
